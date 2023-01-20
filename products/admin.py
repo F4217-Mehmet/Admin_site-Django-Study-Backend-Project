@@ -1,8 +1,9 @@
 from django.contrib import admin
 from .models import Product
+from django.utils import timezone
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "create_date", "is_in_stock", "update_date")
+    list_display = ("name", "create_date", "is_in_stock", "update_date", "added_days_ago", )
     list_editable = ( "is_in_stock", )
     # list_display_links = ("create_date", ) # default olarak listin ilki link gelir. hem link hem editable olmaz
     list_filter = ("is_in_stock", "create_date")
@@ -31,6 +32,10 @@ class ProductAdmin(admin.ModelAdmin):
         count = queryset.update(is_in_stock=True)
         self.message_user(request, f"{count} kinds of product added to stocks")
     is_in_stock.short_description = 'Add selected products to stock' # bu şekilde tanımlama yaptık, adminde daha mantıklı görünmesi için
+
+    # def added_days_ago(self, product):
+    #     fark = timezone.now() - product.create_date
+    #     return fark.days
 
     
 
