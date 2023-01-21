@@ -17,7 +17,20 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} - {self.description}"
 
-    def added_days_ago(self): 
-        fark = timezone.now() - self.create_date
-        return fark.days
+    # def added_days_ago(self): 
+    #     fark = timezone.now() - self.create_date
+    #     return fark.days
 #adminde yaptığımın  aynısını burada yaptım. sadece self yeterli. adminde yazdığım sadece admini ilgilendirir. Modelde yazdığım artık objeye ait oldu. projenin her yerinde kullanabilirim, ulaşabilirim.
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    review = models.TextField()
+    is_released = models.BooleanField(default=True)
+    created_date = models.DateField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Review'
+        verbose_name_plural = 'Reviews'
+
+    def __str__(self):
+        return f"{self.product.name} - {self.review}"  

@@ -192,50 +192,6 @@ Add methods to modelAdmin:
 -----------------------------------------------------------------------------------------------------
 
 
-
-
-### RichText Editors
-    WYSIWYG (what you see is what you get)
-
-    https://djangopackages.org/grids/g/wysiwyg/
-    https://django-ckeditor.readthedocs.io/en/latest/
-
-* pip install django-ckeditor
-
-* 'ckeditor',      >>> add installed_apps
-
-models.py
-```Python
-    from ckeditor.fields import RichTextField
-
-    description = models.TextField(blank=True) >>>> description = RichTextField()
-```
-
-* makemigrations and migrate
-
-* for extra config go to settings.py
-
-settings.py
-```Python
-    CKEDITOR_CONFIGS = {
-        'default' : {
-            'toolbar' : 'full',
-            'height' : 700,
-            'width' : 1000
-        }
-    }
-```
-* Note: ilgili template dosyasında: {{description | safe}}
-
-
-
-
------------------------------------------------------------------------------------------------------
-
-
-
-
-
 ### Model Relations 
 
 * Add new model:
@@ -635,6 +591,53 @@ urlpatterns = [
     path('grappelli/', include('grappelli.urls')), # grappelli URLS üstte olacak
     path('admin/', admin.site.urls), # admin site
 ]
+
+
+-----------------------------------------------------------------------------------------------------
+
+
+
+
+### RichText Editors
+    WYSIWYG (what you see is what you get)
+
+    https://djangopackages.org/grids/g/wysiwyg/
+    https://django-ckeditor.readthedocs.io/en/latest/
+
+* pip install django-ckeditor
+
+* 'ckeditor',      >>> add installed_apps
+
+models.py
+```Python
+    from ckeditor.fields import RichTextField
+
+    description = models.TextField(blank=True) >>>> description = RichTextField()
+```
+
+* makemigrations and migrate
+
+* for extra config go to settings.py
+
+settings.py
+```Python
+    CKEDITOR_CONFIGS = {
+        'default' : {
+            'toolbar' : 'full',
+            'height' : 700,
+            'width' : 1000
+        }
+    }
+```
+* Note: ilgili template dosyasında: {{description | safe}}
+
+
+
+
+-----------------------------------------------------------------------------------------------------
+
+
+
 
 
 

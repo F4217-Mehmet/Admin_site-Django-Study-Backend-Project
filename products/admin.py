@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product
+from .models import Product, Review
 from django.utils import timezone
 
 class ProductAdmin(admin.ModelAdmin):
@@ -33,13 +33,14 @@ class ProductAdmin(admin.ModelAdmin):
         self.message_user(request, f"{count} kinds of product added to stocks")
     is_in_stock.short_description = 'Add selected products to stock' # bu şekilde tanımlama yaptık, adminde daha mantıklı görünmesi için
 
-    # def added_days_ago(self, product):
-    #     fark = timezone.now() - product.create_date
-    #     return fark.days
+    def added_days_ago(self, product):
+        fark = timezone.now() - product.create_date
+        return fark.days
 
     
 
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Review)
 
 admin.site.site_title = "Coredinat Title"
 admin.site.site_header = "Coredinat Admin Portal"  
