@@ -2,8 +2,13 @@ from django.contrib import admin
 from .models import Product, Review
 from django.utils import timezone
 
+class ReviewInline(admin.TabularInline):  
+    model = Review
+    extra = 1
+    classes = ('collapse',)
+
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "create_date", "is_in_stock", "update_date", "added_days_ago", )
+    list_display = ("name", "create_date", "is_in_stock", "update_date", "added_days_ago", "how_many_reviews", )
     list_editable = ( "is_in_stock", )
     # list_display_links = ("create_date", ) # default olarak listin ilki link gelir. hem link hem editable olmaz
     list_filter = ("is_in_stock", "create_date")
@@ -13,6 +18,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_per_page = 25
     date_hierarchy = "update_date"
     # fields = (('name', 'slug'), 'description', "is_in_stock") #fieldset kullandığımız zaman bunu kullanamayız
+    inlines = (ReviewInline,)
     fieldsets = (
         (None, {
             "fields": (
@@ -37,10 +43,20 @@ class ProductAdmin(admin.ModelAdmin):
         fark = timezone.now() - product.create_date
         return fark.days
 
-    
+    def how_many_reviews(self, obj):
+        count = obj.reviews.count()
+        return count
+
+#review modelinde özelleştirmeler yapmak için:
+class ReviewAdmin(admin.ModelAdmin): 
+    list_display = ('__str__', 'created_date', 'is_released')
+    list_per_page = 50
+    raw_id_fields = ('product',) 
+
+
 
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Review)
+admin.site.register(Review, ReviewAdmin)
 
 admin.site.site_title = "Coredinat Title"
 admin.site.site_header = "Coredinat Admin Portal"  

@@ -17,6 +17,10 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} - {self.description}"
 
+    # def how_many_reviews(self):
+    #     count = self.reviews.count()
+    #     return count
+
     # def added_days_ago(self): 
     #     fark = timezone.now() - self.create_date
     #     return fark.days
