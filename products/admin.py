@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Review
+from .models import Product, Review, Category
 from django.utils import timezone
 
 class ReviewInline(admin.TabularInline):  
@@ -28,10 +28,12 @@ class ProductAdmin(admin.ModelAdmin):
         }),
         ('Optionals Settings', {
             "classes" : ("collapse", ),
-            "fields" : ("description",),
+            "fields" : ("description", "categories", ),
             'description' : "You can use this section for optionals settings"
         })
     )
+    filter_horizontal = ("categories", )
+
     actions = ("is_in_stock", )
 
     def is_in_stock(self, request, queryset):
@@ -57,6 +59,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(Category)
 
 admin.site.site_title = "Coredinat Title"
 admin.site.site_header = "Coredinat Admin Portal"  
