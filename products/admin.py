@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Product, Review, Category
 from django.utils import timezone
 from django.utils.safestring import mark_safe
+from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
 class ReviewInline(admin.TabularInline):  
     model = Review
@@ -70,6 +71,9 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'created_date', 'is_released')
     list_per_page = 50
     raw_id_fields = ('product',) 
+    list_filter = (
+        ('product', RelatedDropdownFilter),
+    )
 
 
 
