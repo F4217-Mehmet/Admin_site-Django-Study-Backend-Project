@@ -3,6 +3,11 @@ from .models import Product, Review, Category
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
+from rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
+from .resources import ReviewResource
+from import_export.admin import ImportExportModelAdmin
+from products.resources import ReviewResource
+
 
 class ReviewInline(admin.TabularInline):  
     model = Review
@@ -13,7 +18,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ("name", "create_date", "is_in_stock", "update_date", "added_days_ago", "how_many_reviews", "bring_img_to_list", )
     list_editable = ( "is_in_stock", )
     # list_display_links = ("create_date", ) # default olarak listin ilki link gelir. hem link hem editable olmaz
-    list_filter = ("is_in_stock", "create_date")
+    list_filter = ("is_in_stock", ("create_date", DateTimeRangeFilter))
     ordering = ("name",) 
     search_fields = ("name",)
     prepopulated_fields = {'slug' : ('name',)} #nameden slug üretiyor
@@ -67,13 +72,14 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 #review modelinde özelleştirmeler yapmak için:
-class ReviewAdmin(admin.ModelAdmin): 
+class ReviewAdmin(ImportExportModelAdmin): 
     list_display = ('__str__', 'created_date', 'is_released')
     list_per_page = 50
     raw_id_fields = ('product',) 
     list_filter = (
         ('product', RelatedDropdownFilter),
     )
+    resource_class = ReviewResource
 
 
 
